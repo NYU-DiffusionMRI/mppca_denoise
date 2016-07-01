@@ -1,4 +1,4 @@
-function [Signal, Sigma, Npars] = MPdenoising(data, mask, kernel, sampling, centering)
+function [Signal, Sigma] = MPdenoising(data, mask, kernel, sampling, centering)
     %
     % "MPPCA": 4d image denoising and noise map estimation by exploiting  data redundancy in the PCA domain using universal properties of the eigenspectrum of
     % random covariance matrices, i.e. Marchenko Pastur distribution
