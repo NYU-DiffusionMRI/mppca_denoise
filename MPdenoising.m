@@ -146,12 +146,9 @@ function [Signal, Sigma] = MPdenoising(data, mask, kernel, sampling, centering)
     
     % compute scaling factor for in case N<M
     R = min(M, N);
-    scaling = ones(R-centering, 1);
-    if M>N
-        scaling = (M - (0:R-centering-1)) / N;
-        scaling(scaling<1) = 1;
-        scaling = scaling(:);
-    end
+    scaling = (max(M, N) - (0:R-centering-1)) / N;
+    scaling = scaling(:);
+
     
     % start denoising
     for nn = 1:numel(x)
@@ -186,6 +183,7 @@ function [Signal, Sigma] = MPdenoising(data, mask, kernel, sampling, centering)
         if isempty(t)
             sigma(nn) = NaN;
             signal(:, :, nn) = X;  
+            t = R+1;
         else
             sigma(nn) = sqrt(sigmasq_1(t));
             vals(t:R) = 0;
