@@ -1,9 +1,10 @@
  "MPPCA": 4d image denoising and noise map estimation by exploiting  data redundancy in the PCA domain using universal properties of the eigenspectrum of
      random covariance matrices, i.e. Marchenko Pastur distribution
     
+      MATLAB:
       [Signal, Sigma] = MPdenoising(data, mask, kernel, sampling)
            output:
-               - Signal: [x, y, z, M] denoised data matrix
+               - Signal: [x, y, z, N] denoised data matrix
                - Sigma: [x, y, z] noise map
            input:
                - data: [x, y, z, M] data matrix
@@ -12,9 +13,24 @@
                - sampling: 
                         1. full: sliding window (default for noise map estimation, i.e. [Signal, Sigma] = MPdenoising(...) )
                         2. fast: block processing (default for denoising, i.e. [Signal] = MPdenoising(...))
+                        
+      PYTHON:
+      from mpdenoise import MP
+      
+      denoiser = MP(img, kernel='5,5,5')
+      imgdn, sigma, nparameters = denoiser.process()
+      
+         output:
+             - Signal [x, y, z, N] denoised data matrix
+             - Sigma [x, y, z] noise map
+             - N parameters [x, y, z] significant principal component map
+         input:
+             - data: [x, y, z, N] data matrix
+             - kernel: (optional) window size, typically in order of [5 x 5 x 5]
+             
      
-      Authors: Jelle Veraart (jelle.veraart@nyumc.org)
-     Copyright (c) 2016 New York Universit and University of Antwerp
+      Authors: Jelle Veraart (jelle.veraart@nyumc.org), Ben Ades-Aron (Benjamin.Ades-Aron@nyulangone.org)
+      Copyright (c) 2016 New York Universit and University of Antwerp
            
           Permission is hereby granted, free of charge, to any non-commercial entity
           ('Recipient') obtaining a copy of this software and associated
