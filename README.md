@@ -15,10 +15,8 @@
                         2. fast: block processing (default for denoising, i.e. [Signal] = MPdenoising(...))
                         
       PYTHON:
-      from mpdenoise import MP
-      
-      denoiser = MP(img, kernel='5,5,5')
-      imgdn, sigma, nparameters = denoiser.process()
+      import mpdenoise as mp
+      imgdn, sigma, nparameters = mp.denoise(img, kernel='5,5,5)
       
          output:
              - Signal [x, y, z, N] denoised data matrix
