@@ -118,13 +118,11 @@ function [Signal, Sigma] = MPdenoising(data, mask, kernel, sampling, centering)
     if strcmp(sampling, 'full')
         warning('image bounderies are not processed.')
         mask(1:k(1), :, :) = 0;
-        mask(sx-k(1):sx, :, :) = 0;
- 
+        mask(sx-k(1)+1:sx, :, :) = 0;
         mask(:, 1:k(2), :) = 0;
-        mask(:, sy-k(2):sy, :, :) = 0;           
+        mask(:, sy-k(2)+1:sy, :, :) = 0;           
         mask(:,:,1:k(3)) = 0;
-        mask(:,:,sz-k(3)) = 0;
-             
+        mask(:,:,sz-k(3)+1:sz) = 0;
         x = []; y = []; z = []; 
         for i = k(3)+1:sz-k(3)
             [x_, y_] = find(mask(:,:,i) == 1);
