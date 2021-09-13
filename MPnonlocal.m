@@ -74,10 +74,14 @@ function [Signal, Sigma, Npars] = MPnonlocal(data, kernel, psize, nrm)
 
     if isreal(data) 
         data = single(data);
-        coil = false;
     else
         data = complex(single(data));
+    end
+    
+    if ndims(data) > 4
         coil = true;
+    else
+        coil = false;
     end
     
     if ~exist('kernel', 'var') || isempty(kernel)
@@ -141,9 +145,12 @@ function [Signal, Sigma, Npars] = MPnonlocal(data, kernel, psize, nrm)
     end 
     x = x(:); y = y(:); z = z(:);
     
-    [pi, pj, pk] = find(ones(kernel));
-    patchcoords = cat(2,pi,pj,pk);
-    pos_img = 1/prod(kernel) * sum((patchcoords - ceil(kernel/2)).^2, 2);
+    if nonlocal
+        pinds = find(ones(kernel));
+        [pi,pj,pk] = ind2sub(kernel,pinds)
+        patchcoords = cat(2,pi,pj,pk);
+        pos_img = 1/prod(kernel) * sum((patchcoords - ceil(kernel/2)).^2, 2);
+    end
 
     % Declare variables:
     sigma = zeros(1, numel(x), 'like', data);
