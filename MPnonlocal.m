@@ -127,7 +127,7 @@ function [Signal, Sigma, Npars] = MPnonlocal(data, kernel, psize, nrm)
     mask = true([sx, sy, sz]);
     
     flip = false;
-    if M > N
+    if M < N
         flip = true;
     end
     
@@ -281,30 +281,23 @@ function [s, sigma, npars] = denoise(X, flip, nrm)
     t = find(sigmasq_2 < sigmasq_1, 1);
 
     if isempty(t)
-        sigma(1) = NaN;
-        s = X;  
-        t = R;
+        sigma = NaN;
+        s = X; 
+        t = R+1;
     else
-        sigma(1) = single(sqrt(sigmasq_1(t))); 
-        npars(1) = t-1;
-        T = t:R;
-
+        sigma = single(sqrt(sigmasq_1(t))); 
+        vals(t:R) = 0;
         if strcmp(nrm,'h')
-            vals_ = vals;
-            vals_H = vals_;
-            vals_H(T) = 0;
-            vals = vals_H;
-            s = u * diag(sqrt(N*vals)) * v';
+            s = u*diag(sqrt(N*vals))*v';
         elseif strcmp(nrm,'frob')
-            g = gamma(1);
-            n = sqrt(N)*sigma;
-            y = diag(vale)/n;
-            vals_frob = n * diag(shrink(y, g));
-            s = u * (vals_frob) * v';
+            g=gamma(1);
+            vals_frob= sqrt(N)*sigma * diag(shrink(diag(vale)/(sqrt(N)*sigma), g));
+            s = u*(vals_frob)*v';
         end
+    end
+    npars = t-1;
 
-        if flip
-            s = s';
-        end
+    if flip
+        s = s';
     end
 end
