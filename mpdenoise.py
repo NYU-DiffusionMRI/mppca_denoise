@@ -126,7 +126,7 @@ class MP(object):
         R = np.min((M, N)).astype(int)
         
         flip = False
-        if M > N:  
+        if M < N:  
             flip = True
             X = X.T
             M = X.shape[0]
