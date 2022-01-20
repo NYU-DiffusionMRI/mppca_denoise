@@ -1,4 +1,4 @@
-function [Signal, varargout] = MPnonlocal_exp(data, varargin)    
+function [Signal, varargout] = MPnonlocal(data, varargin)    
     % MPnonlocal Denoise 4d magnitude data (x, y, z, dirs) or 5d complex data 
     %   (x, y, z, coils, dirs) and estimate 3d noise maps and significant 
     %   parameter maps using nonlocal patching and eigenvalue shrinkage in
